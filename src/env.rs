@@ -1,8 +1,9 @@
-use lazy_static::lazy_static;
+#[cfg(feature="wasm")]
+pub(crate) fn env(name: &str) -> &String {
+    crate::wasm::env(name).unwrap()
+}
 
-#[cfg(features = "wasm")]      use crate::wasm::env;
-#[cfg(not(features = "wasm"))] use std::env::var as env;
-
-lazy_static! {
-    pub static ref SERVER_URL: String = env("SERVER_URL").unwrap();
+#[cfg(feature="native")]
+pub(crate) fn env(name: &str) -> String {
+    std::env::var(name).unwrap()
 }

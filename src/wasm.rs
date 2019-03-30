@@ -1,9 +1,28 @@
 #![allow(non_camel_case_types)]
 use wasm_bindgen::prelude::*;
+use wasm_bindgen_futures::future_to_promise;
+use js_sys::Promise;
+use futures::Future;
+
+struct Env {
+    server_url: Option<String>,
+}
+
+static mut ENV: Env = Env { server_url: None };
+
+pub(crate) fn env(name: &str) -> Option<&String> {
+    match name {
+        "SERVER_URL" => unsafe { ENV.server_url.as_ref() }
+        _ => None,
+    }
+}
 
 #[wasm_bindgen]
-extern "C" {
-    pub(crate) fn env(var: &str) -> Option<String>;
+pub fn register_env(name: &str, value: &str) {
+    match name {
+        "SERVER_URL" => unsafe { ENV.server_url = Some(value.to_owned()); }
+        _ => {}
+    }
 }
 
 macro_rules! wrap {
@@ -34,6 +53,16 @@ macro_rules! wrap {
             }
         }
     };
+
+    (fn $name:ident($($arg:ident: $type:ty),*), $fn:path) => {
+        #[wasm_bindgen]
+        pub fn $name($($arg: $type),*) -> Promise {
+            let future = $fn($($arg.into()),*)
+                .map(|value| JsValue::from_serde(&value).unwrap())
+                .map_err(|error| JsValue::from_serde(&error).unwrap());
+            future_to_promise(future)
+        }
+    }
 }
 
 wrap!(type I18n, shared::I18n);
@@ -52,16 +81,5 @@ wrap!(type Description_Universe, shared::Description<shared::Universe>);
 wrap!(type UnitClass, shared::UnitClass);
 wrap!(type UnitType, shared::UnitType);
 
-#[wasm_bindgen]
-pub fn list_universes() -> Result<Vec<Description_Universe>, JsValue> {
-    crate::api::list_universes()
-        .map(|vec| vec.into_iter().map(Into::into).collect())
-        .map_err(|err| JsValue::from_serde(&err).unwrap())
-}
-
-#[wasm_bindgen]
-pub fn load_universe(id: Id_Universe) -> Result<Universe, JsValue> {
-    crate::api::load_universe(id.into())
-        .map(Into::into)
-        .map_err(|err| JsValue::from_serde(&err).unwrap())
-}
+wrap!(fn list_universes(), crate::api::list_universes);
+wrap!(fn load_universe(id: Id_Universe), crate::api::load_universe);
