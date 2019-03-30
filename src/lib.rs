@@ -1,7 +1,9 @@
-#[cfg(test)]
-mod tests {
-    #[test]
-    fn it_works() {
-        assert_eq!(2 + 2, 4);
-    }
-}
+mod api;
+mod env;
+#[cfg(feature="wasm")]
+mod wasm;
+
+#[cfg(not(feature="wasm"))]
+pub use api::*;
+#[cfg(feature="wasm")]
+pub use wasm::*;
