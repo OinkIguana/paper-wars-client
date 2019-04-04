@@ -1,6 +1,9 @@
+[Paper Wars]: https://github.com/oinkiguana/paper-wars
+[server]: https://github.com/oinkiguana/paper-wars-server
+
 # Paper Wars (Client)
 
-The Paper Wars client is able to make requests to the Paper Wars server in a type-safe and
+The [Paper Wars]() client is able to make requests to the Paper Wars [server] in a type-safe and
 consistent manner. It is also able to perform some of the operations the server can, so that the
 client is able to provide as much information to the players as needed.
 
