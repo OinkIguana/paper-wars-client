@@ -1,9 +1,12 @@
+#[macro_use]
+extern crate rental;
+
 mod api;
 mod env;
-#[cfg(feature="wasm")]
-mod wasm;
+mod localization;
 
-#[cfg(feature="native")]
-pub use api::*;
-#[cfg(feature="wasm")]
-pub use wasm::*;
+#[cfg(feature="wasm")] mod wasm;
+#[cfg(feature="wasm")] pub use wasm::*;
+
+#[cfg(feature="native")] pub use api::*;
+#[cfg(feature="native")] pub use localization::*;

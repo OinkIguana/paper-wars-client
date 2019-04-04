@@ -8,6 +8,7 @@ macro_rules! get {
     ($($path:tt)*) => {{
         use futures::{Future as _, Stream as _};
         let request = crate::api::CLIENT.get(&format!($($path)*)).build().unwrap();
+        // TODO: pass accept language header
         crate::api::CLIENT.execute(request)
             .map_err(|error| format!("API Error ([{}]:{}#{}): {:?}", file!(), line!(), column!(), error))
             .map(|response| response.into_body()
@@ -32,8 +33,7 @@ macro_rules! get {
         let mut opts = RequestInit::new();
         opts.method("GET");
         let request = Request::new_with_str_and_init(&format!($($path)*), &opts).unwrap();
-        let promise = window().unwrap()
-            .fetch_with_request(&request);
+        let promise = window().unwrap().fetch_with_request(&request);
         JsFuture::from(promise)
             .and_then(|response| {
                 let response: Response = response.dyn_into().unwrap();

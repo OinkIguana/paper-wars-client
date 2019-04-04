@@ -6,8 +6,8 @@ edition = "2018"
 
 [features]
 default = ["wasm"]
-native = ["reqwest", "futures"]
-wasm = ["futures", "wasm-bindgen", "wasm-bindgen-futures", "js-sys", "web-sys"]
+native = ["reqwest"]
+wasm = ["wasm-bindgen", "wasm-bindgen-futures", "js-sys", "web-sys"]
 
 [lib]
 crate-type = ["cdylib"]
@@ -17,9 +17,11 @@ shared = { path = "../shared" }
 lazy_static = "1.3"
 serde_cbor = "0.9"
 serde = "1.0"
+fluent-bundle = "0.6"
+rental = "0.5"
+futures = "0.1"
 
 reqwest = { version = "0.9", optional = true }
-futures = { version = "0.1", optional = true }
 js-sys = { version = "0.3", optional = true }
 wasm-bindgen = { version = "0.2", features = ["serde-serialize"], optional = true }
 wasm-bindgen-futures = { version = "0.3", optional = true }
