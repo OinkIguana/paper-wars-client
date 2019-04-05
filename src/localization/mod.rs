@@ -1,4 +1,5 @@
 use std::sync::{Mutex, Arc};
+use std::collections::HashMap;
 use lazy_static::lazy_static;
 use shared::I18n;
 
@@ -14,7 +15,7 @@ rental! {
 
 lazy_static! {
     static ref LANGUAGE: Arc<Mutex<Option<Vec<String>>>> = Arc::default();
-    static ref LION: Arc<Mutex<Option<lion::Lion>>> = Arc::default();
+    static ref LION: Arc<Mutex<HashMap<String, lion::Lion>>> = Arc::default();
 }
 
 pub fn set_locales(locales: &[&str]) {
@@ -25,7 +26,7 @@ pub fn get_locales() -> Vec<String> {
     LANGUAGE.lock().unwrap().clone().unwrap_or(vec![])
 }
 
-pub fn set_source(source: String) {
+pub fn set_source(subject: String, source: String) {
     let resource = match fluent_bundle::FluentResource::try_new(source) {
         Ok(resource) => resource,
         Err((resource, _)) => resource,
@@ -35,12 +36,12 @@ pub fn set_source(source: String) {
         bundle.add_resource(resource).ok();
         bundle
     });
-    *LION.lock().unwrap() = Some(lion);
+    LION.lock().unwrap().insert(subject, lion);
 }
 
-pub fn localize(key: I18n) -> String {
+pub fn localize(subject: String, key: I18n) -> String {
     let lion = LION.lock().unwrap();
-    lion.as_ref()
+    lion.get(&subject)
         .and_then(|lion| lion.rent(|bundle| bundle.format(key.as_ref(), None)))
         .map(|(formatted, _)| formatted)
         .unwrap_or(key.as_ref().to_string())

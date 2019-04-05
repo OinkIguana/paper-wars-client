@@ -93,11 +93,11 @@ wrap!(struct Id_Universe(shared::Id<shared::Universe>));
 wrap!(struct UnitClass(shared::UnitClass));
 wrap!(struct UnitType(shared::UnitType));
 
-wrap!(async fn load_localization(), crate::api::load_localization);
+wrap!(async fn localize_universe(universe: Id_Universe), crate::api::localize_universe);
 wrap!(async fn list_universes(), crate::api::list_universes);
 wrap!(async fn load_universe(id: Id_Universe), crate::api::load_universe);
 #[wasm_bindgen]
 pub fn set_locales(language: String) {
     crate::localization::set_locales(&language.split(",").collect::<Vec<_>>())
 }
-wrap!(fn localize(language: I18n), crate::localization::localize);
+wrap!(fn localize(subject: String, language: I18n), crate::localization::localize);
