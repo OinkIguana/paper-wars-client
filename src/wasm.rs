@@ -80,6 +80,7 @@ macro_rules! wrap {
 wrap!(struct I18n(shared::I18n));
 wrap!(struct DamageType(shared::DamageType));
 wrap!(struct MapType(shared::MapType));
+wrap!(struct Id_MapType(shared::Id<shared::MapType>));
 wrap!(struct ModifierClass(shared::ModifierClass));
 wrap!(struct ModifierType(shared::ModifierType));
 wrap!(struct Race(shared::Race));
@@ -96,6 +97,7 @@ wrap!(struct UnitType(shared::UnitType));
 wrap!(async fn localize_universe(universe: Id_Universe), crate::api::localize_universe);
 wrap!(async fn list_universes(), crate::api::list_universes);
 wrap!(async fn load_universe(id: Id_Universe), crate::api::load_universe);
+wrap!(async fn new_game(name: String, universe: Id_Universe, map: Id_MapType), crate::api::new_game);
 #[wasm_bindgen]
 pub fn set_locales(language: String) {
     crate::localization::set_locales(&language.split(",").collect::<Vec<_>>())

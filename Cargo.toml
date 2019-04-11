@@ -36,5 +36,8 @@ features = [
   'RequestMode',
   'Response',
   'Window',
+  'Crypto',
+  'SubtleCrypto',
+  'CryptoKey',
   'console',
 ]
