@@ -1,10 +1,8 @@
-[Paper Wars]: https://github.com/oinkiguana/paper-wars
-[server]: https://github.com/oinkiguana/paper-wars-server
+[Paper Wars]: https://github.com/foxfriends/paper-wars
+[server]: https://github.com/foxfriends/paper-wars-server
 
 # Paper Wars (Client)
 
-The [Paper Wars]() client is able to make requests to the Paper Wars [server] in a type-safe and
-consistent manner. It is also able to perform some of the operations the server can, so that the
-client is able to provide as much information to the players as needed.
-
-Designed to be embedded in a native front-end, this client can be compiled to WASM or C library.
+The [Paper Wars][] client provides a friendly and type-safe interface to the API exposed by
+the [server][]. Designed to be embedded in any front-end, this client aims to be compiled to
+WASM or a native C library.
