@@ -3,9 +3,12 @@ name = "client"
 version = "0.1.0"
 authors = ["Cameron Eldridge <cameldridge+git@gmail.com>"]
 edition = "2018"
+include = ["src/**/*", "queries/*", "build.rs", "Cargo.toml"]
 
 [lib]
 crate-type = ["cdylib"]
 
 [dependencies]
+anyhow = "1.0"
+graphql_client = "0.9"
 shared = { path = "../shared" }
