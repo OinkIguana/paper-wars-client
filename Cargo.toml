@@ -12,5 +12,4 @@ crate-type = ["cdylib"]
 anyhow = "1.0"
 graphql_client = "0.9"
 reqwest = { version = "0.10", features = ["json"] }
-shared = { path = "../shared" }
 tokio = { version = "0.2", features = ["sync"] }
