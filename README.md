@@ -10,5 +10,5 @@ WASM or a native C library.
 ## Setup
 
 1.  Set up the [server][].
-2.  Compile the server (with `cargo build`). One of the output binaries is required to build 
-    the client.
+2.  Install the schema extraction script (until I find a better solution): `npm i -g get-graphql-schema`
+3.  Run the `./generate-schema` script to generate the schema from the server.

@@ -1,0 +1,7 @@
+mutation Authenticate($email: String!, $password: String!) {
+    authenticate(credentials: { email: $email, password: $password })
+}
+
+mutation Reauthenticate($token: String!) {
+    authenticate(token: $token)
+}

@@ -1,0 +1,3 @@
+#!/bin/bash
+mkdir -p schemas
+get-graphql-schema http://localhost:3000/graphql > ./schemas/paper-wars.graphql

@@ -6,10 +6,29 @@ edition = "2018"
 include = ["src/**/*", "queries/*", "build.rs", "Cargo.toml"]
 
 [lib]
-crate-type = ["cdylib"]
+crate-type = ["cdylib", "rlib"]
 
 [dependencies]
 anyhow = "1.0"
-graphql_client = "0.9"
+async-std = { version = "1.6", features = ["unstable"], default-features = false }
+graphql_client = { version = "0.9" }
+serde = { version = "1.0", features = ["derive"] }
+
+[target.'cfg(not(target_arch = "wasm32"))'.dependencies]
 reqwest = { version = "0.10", features = ["json"] }
-tokio = { version = "0.2", features = ["sync"] }
+
+[target.'cfg(target_arch = "wasm32")'.dependencies]
+wasm-bindgen = { version = "0.2.67", features = ["serde-serialize"]  }
+js-sys = "0.3.44"
+wasm-bindgen-futures = "0.4.17"
+
+[target.'cfg(target_arch = "wasm32")'.dependencies.web-sys]
+version = "0.3.4"
+features = [
+  "Headers",
+  "Request",
+  "RequestInit",
+  "RequestMode",
+  "Response",
+  "Window",
+]
