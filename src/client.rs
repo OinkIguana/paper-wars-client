@@ -3,7 +3,6 @@ use graphql_client::GraphQLQuery;
 use std::sync::Arc;
 use async_std::sync::RwLock;
 
-
 #[cfg(target_arch = "wasm32")]
 use wasm_bindgen::prelude::*;
 #[cfg(target_arch = "wasm32")]
@@ -43,12 +42,20 @@ impl Client {
         Ok(client)
     }
 
-    pub async fn authenticate(&self, email: String, password: String) -> anyhow::Result<()> {
+    pub async fn authenticate(&self, email: String, password: String) -> anyhow::Result<String> {
         let response = self
             .call::<Authenticate>(authenticate::Variables { email, password })
             .await?;
-        self.set_authentication(response.authenticate).await;
-        Ok(())
+        self.set_authentication(response.authenticate.clone()).await;
+        Ok(response.authenticate)
+    }
+
+    pub async fn reauthenticate(&self, token: String) -> anyhow::Result<String> {
+        let response = self
+            .call::<Reauthenticate>(reauthenticate::Variables { token })
+            .await?;
+        self.set_authentication(response.authenticate.clone()).await;
+        Ok(response.authenticate)
     }
 
     pub async fn is_authenticated(&self) -> bool {
